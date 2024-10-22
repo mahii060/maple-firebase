@@ -48,9 +48,14 @@ function App() {
     <>
 
       <h1>Firebase + React</h1>
-      <button onClick={handleGoogleSignIn}>Google Sign In</button>
-      <button onClick={handleGithubSignIn}>Github Sign In</button>
-      <button onClick={handleSignOut}>Sign Out</button>
+      {
+        user ? <button onClick={handleSignOut}>Sign Out</button>
+          :
+          <>
+            <button onClick={handleGoogleSignIn}>Google Sign In</button>
+            <button onClick={handleGithubSignIn}>Github Sign In</button>
+          </>
+      }
       {user && <div className="card">
         <h2>User Name: {user.displayName}</h2>
         <p>Email: {user.email}</p>
