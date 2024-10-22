@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import './App.css'
-import { getAuth, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
+import { getAuth, GithubAuthProvider, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 import app from './firebase/firebase.config';
 
 function App() {
@@ -9,9 +9,21 @@ function App() {
   const auth = getAuth(app);
 
   const googleProvider = new GoogleAuthProvider()
+  const githubProvider = new GithubAuthProvider()
 
   const handleGoogleSignIn = () => {
     signInWithPopup(auth, googleProvider)
+      .then(result => {
+        const loggedUser = result.user;
+        console.log(loggedUser);
+        setUser(loggedUser)
+      })
+      .catch(error => {
+        console.log(error);
+      })
+  }
+  const handleGithubSignIn = () => {
+    signInWithPopup(auth, githubProvider)
       .then(result => {
         const loggedUser = result.user;
         console.log(loggedUser);
@@ -27,8 +39,10 @@ function App() {
 
       <h1>Firebase + React</h1>
       <button onClick={handleGoogleSignIn}>Google Sign In</button>
+      <button onClick={handleGithubSignIn}>Github Sign In</button>
       {user && <div className="card">
         <h2>User Name: {user.displayName}</h2>
+        <p>Email: {user.email}</p>
         <img src={user.photoURL} alt="" />
       </div>}
     </>
